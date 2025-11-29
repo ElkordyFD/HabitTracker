@@ -9,12 +9,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-
+import androidx.compose.material.icons.filled.Edit
 
 @Composable
 fun HomeScreen(
     onAddHabit: () -> Unit,
     onHabitClick: (Int) -> Unit,
+    onEdit: (Int) -> Unit,
     viewModel: HomeViewModel = viewModel()
 ) {
     val habits by viewModel.habits.collectAsState()
@@ -53,6 +54,13 @@ fun HomeScreen(
                         ) {
                             Text(habit.title, style = MaterialTheme.typography.titleLarge)
                             Text(habit.description ?: "", style = MaterialTheme.typography.bodyMedium)
+                        }
+
+                        IconButton(onClick = { onEdit(habit.id) }) {
+                            Icon(
+                                imageVector = Icons.Default.Edit, // لازم تستوردها
+                                contentDescription = "Edit Habit"
+                            )
                         }
 
                         // زر الحذف
