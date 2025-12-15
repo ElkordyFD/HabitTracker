@@ -4,12 +4,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.compose.material.icons.filled.Edit
 
 @Composable
 fun HomeScreen(
@@ -22,7 +23,10 @@ fun HomeScreen(
 
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(onClick = onAddHabit) {
+            FloatingActionButton(
+                onClick = onAddHabit,
+                modifier = Modifier.testTag("addHabitButton")
+            ) {
                 Text("+")
             }
         }
@@ -46,25 +50,30 @@ fun HomeScreen(
                         modifier = Modifier.padding(16.dp),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        // جزء Habit نفسه
                         Column(
                             modifier = Modifier
                                 .weight(1f)
                                 .clickable { onHabitClick(habit.id) }
+                                .testTag("habitTitle_${habit.id}")
                         ) {
                             Text(habit.title, style = MaterialTheme.typography.titleLarge)
                             Text(habit.description ?: "", style = MaterialTheme.typography.bodyMedium)
                         }
 
-                        IconButton(onClick = { onEdit(habit.id) }) {
+                        IconButton(
+                            onClick = { onEdit(habit.id) },
+                            modifier = Modifier.testTag("editButton_${habit.id}")
+                        ) {
                             Icon(
-                                imageVector = Icons.Default.Edit, // لازم تستوردها
+                                imageVector = Icons.Default.Edit,
                                 contentDescription = "Edit Habit"
                             )
                         }
 
-                        // زر الحذف
-                        IconButton(onClick = { viewModel.deleteHabit(habit) }) {
+                        IconButton(
+                            onClick = { viewModel.deleteHabit(habit) },
+                            modifier = Modifier.testTag("deleteButton_${habit.id}")
+                        ) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
                                 contentDescription = "Delete Habit"
